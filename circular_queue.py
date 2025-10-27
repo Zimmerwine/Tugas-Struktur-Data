@@ -65,27 +65,56 @@ def printQueue(q):
 
     curr = q.front
     while True:
-        print(curr.data, end=" ")
+        print(curr.data, end="->")
         curr = curr.next
         if curr == q.front:
             break
+    
+    print("[kembali ke ", front(q),"]")
     print()
 
 if __name__ == "__main__":
     q = Queue()
-
-
-    enQueue(q, 14)
-    enQueue(q, 22)
-    enQueue(q, 6)
-    enQueue(q, 20)
     
-    print("Front value =", front(q))
-    print("Rear value =", rear(q))
-
-    printQueue(q)
-
-    print("Deleted value =", deQueue(q))
-    print("Deleted value =", deQueue(q))
-
-    printQueue(q)
+    while True:
+        print("\nMenu Circular Queue:")
+        print("1. Enqueue")
+        print("2. Show Front and Rear values")
+        print("3. Dequeue")
+        print("4. Print Queue")
+        print("5. Exit")
+        
+        choice = input("Pilih menu (1-5): ")
+        
+        if choice == '1':
+            n = int(input("Masukkan berapa kali ingin melakukan enqueue: "))
+            for i in range(n):
+                value = int(input(f"Masukkan nilai ke-{i+1}: "))
+                enQueue(q, value)
+            print("Enqueue selesai!")
+            
+        elif choice == '2':
+            print("Front value =", front(q))
+            print("Rear value =", rear(q))
+            
+        elif choice == '3':
+            deleted = deQueue(q)
+            if deleted != -1:
+                print("Deleted value =", deleted)
+            else:
+                print("Queue kosong!")
+                
+        elif choice == '4':
+            if q.front is None:
+                print("Queue kosong!")
+            else:
+                print("Isi Queue:", end=" ")
+                printQueue(q)
+                
+                
+        elif choice == '5':
+            print("keluar...bye bye!")
+            break
+            
+        else:
+            print("Pilihan tidak valid! Silakan pilih 1-5.")
