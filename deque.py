@@ -1,58 +1,83 @@
-# Implementasi Deque tanpa library bawaan Python
-# Author: (nama kamu)
-# Untuk presentasi: menunjukkan operasi dasar Deque
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.prev = None
 
 class Deque:
     def __init__(self):
-        # Inisialisasi deque sebagai list kosong
-        self.items = []
+        self.front = None
+        self.rear = None
     
-    # Menambahkan elemen di belakang (kanan)
-    def add_rear(self, item):
-        self.items.append(item)
-        print(f"Elemen '{item}' ditambahkan di belakang.")
+    def is_empty(self):
+        return self.front is None
     
-    # Menambahkan elemen di depan (kiri)
     def add_front(self, item):
-        self.items.insert(0, item)
+        new_node = Node(item)
+        
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            new_node.next = self.front
+            self.front.prev = new_node
+            self.front = new_node
         print(f"Elemen '{item}' ditambahkan di depan.")
     
-    # Menghapus elemen dari depan
+    def add_rear(self, item):
+        new_node = Node(item)
+        
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            new_node.prev = self.rear
+            self.rear.next = new_node
+            self.rear = new_node
+        print(f"Elemen '{item}' ditambahkan di belakang.")
+    
     def remove_front(self):
-        if not self.is_empty():
-            removed = self.items.pop(0)
-            print(f"Elemen '{removed}' dihapus dari depan.")
-            return removed
-        else:
+        if self.is_empty():
             print("Deque kosong! Tidak bisa hapus dari depan.")
-    
-    # Menghapus elemen dari belakang
-    def remove_rear(self):
-        if not self.is_empty():
-            removed = self.items.pop()
-            print(f"Elemen '{removed}' dihapus dari belakang.")
-            return removed
+            return None
+            
+        removed = self.front.data
+        
+        if self.front == self.rear:  # hanya satu node
+            self.front = self.rear = None
         else:
+            self.front = self.front.next
+            self.front.prev = None
+            
+        print(f"Elemen '{removed}' dihapus dari depan.")
+        return removed
+    
+    def remove_rear(self):
+        if self.is_empty():
             print("Deque kosong! Tidak bisa hapus dari belakang.")
+            return None
+            
+        removed = self.rear.data
+        
+        if self.front == self.rear:  # hanya satu node
+            self.front = self.rear = None
+        else:
+            self.rear = self.rear.prev
+            self.rear.next = None
+            
+        print(f"Elemen '{removed}' dihapus dari belakang.")
+        return removed
     
-    # Mengecek apakah deque kosong
-    def is_empty(self):
-        return len(self.items) == 0
-    
-    # Menampilkan isi deque
     def display(self):
         if self.is_empty():
             print("Deque kosong.")
-        else:
-            print("Isi Deque:", self.items)
-    
-    # Mengembalikan ukuran deque
-    def size(self):
-        return len(self.items)
+            return
+            
+        print("Isi Deque:", end=" ")
+        current = self.front
+        while current:
+            print(current.data, end=" <-> " if current.next else "")
+            current = current.next
+        print()
 
-# ----------------------------
-# Bagian utama program (demo)
-# ----------------------------
 if __name__ == "__main__":
     dq = Deque()
     
